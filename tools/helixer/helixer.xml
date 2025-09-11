@@ -72,7 +72,7 @@
     <inputs>
         <param argument="--fasta-path" name="input" type="data" format="fasta,fasta.gz" label="Genomic sequence"></param>
         <param argument="--model-filepath" optional="true" name="input_model" type="data" format="h5" label="Lineage model" help="Import your lineage model to replace the default lineage. Please enter a value for the --subsequence_length parameter."></param>
-        <param name="compression" argument="--compression" type="select" optional="true" label="Compression used for datasets in predictions HDF5 file">
+        <param name="compression" type="select" optional="true" label="Compression used for datasets in predictions HDF5 file">
             <option value="gzip" selected="true">gzip</option>
             <option value="lzf">lzf</option>
         </param>
@@ -112,8 +112,8 @@
             </when>
             <when value="false"/>
         </conditional>
-        <param name="write_by" argument="--write-by" type="integer" value="20000000" optional="true" label="Number of base pairs per super-chunk" help="For lower memory consumption, consider setting a lower number"/>
-        <param name="no_multiprocess" argument="--no-multiprocess" type="boolean" truevalue="--no-multiprocess" falsevalue="" checked="false" label="Disable multiprocessing for data processing" help="Disable multiprocessing for data processing."/>
+        <param name="write_by" type="integer" value="20000000" optional="true" label="Number of base pairs per super-chunk" help="For lower memory consumption, consider setting a lower number"/>
+        <param name="no_multiprocess" type="boolean" truevalue="--no-multiprocess" falsevalue="" checked="false" label="Disable multiprocessing for data processing" help="Disable multiprocessing for data processing."/>
     </inputs>
 
     <outputs>
