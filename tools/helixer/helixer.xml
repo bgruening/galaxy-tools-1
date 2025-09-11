@@ -12,58 +12,70 @@
     </requirements>
 
     <command detect_errors="exit_code"><![CDATA[
-        /usr/local/bin/fetch_helixer_models.py &&
-        Helixer.py
-        --fasta-path '$input'
-        --species '$species'
-        --gff-output-path '$output'
-        --temporary-dir ./
+            /home/helixer_user/bin/helixer_post_bin --help &&
+            Helixer.py
+            --fasta-path '$input'
+            --species '$species'
+            --gff-output-path '$output'
+            --temporary-dir ./
 
-        #set default_subsequence_length = {"fungi": 21384, "land_plant": 106920, "invertebrate": 213840, "vertebrate": 213840}
-        #set subsequence_len = default_subsequence_length.get(str($lineages))
-        #set default_overlap_offset = {"fungi": 10692, "land_plant": 53460, "invertebrate": 106920, "vertebrate": 106920}
-        #set overlap_off = default_overlap_offset.get(str($lineages))
-        #set default_overlap_core_length = {"fungi": 16038, "land_plant": 80190, "invertebrate": 160380, "vertebrate": 160380}
-        #set overlap_core_len = default_overlap_core_length.get(str($lineages))
-
-        #if str($input_model) != "" and str($input_model) != "None":
-            --model-filepath '$input_model'
-            --subsequence-length '$subsequence_length'
+            #set default_subsequence_length = {"fungi": 21384, "land_plant": 106920, "invertebrate": 213840, "vertebrate": 213840}
+            #set subsequence_len = default_subsequence_length.get(str($lineages))
+            #set default_overlap_offset = {"fungi": 10692, "land_plant": 53460, "invertebrate": 106920, "vertebrate": 106920}
+            #set overlap_off = default_overlap_offset.get(str($lineages))
+            #set default_overlap_core_length = {"fungi": 16038, "land_plant": 80190, "invertebrate": 160380, "vertebrate": 160380}
+            #set overlap_core_len = default_overlap_core_length.get(str($lineages))
             
-        #else:
-            --lineage '$lineages'
-            #if str($subsequence_length) == "":
-                --subsequence-length '$subsequence_len'
-            #else:
+            #if str($input_model) != "" and str($input_model) != "None":
+                --model-filepath '$input_model'
                 --subsequence-length '$subsequence_length'
-            #end if
-
-            #if str($option_overlap.use_overlap) == "true":
-                #if str($option_overlap.overlap_offset) == "":
-                    --overlap-offset '$overlap_off'
+            
+            #else:
+                --lineage '$lineages'
+                #if str($subsequence_length) == "":
+                    --subsequence-length '$subsequence_len'
                 #else:
-                    --overlap-offset '$overlap_offset'
+                    --subsequence-length '$subsequence_length'
                 #end if
-
-                #if str($option_overlap.overlap_core_length) == "":
-                    --overlap-core-length '$overlap_core_len'
-                #else:
-                    --overlap-core-length '$overlap_core_length'
+                #if str($option_overlap.use_overlap) == "true":
+                    #if str($option_overlap.overlap_offset) == "":
+                        --overlap-offset '$overlap_off'
+                    #else:
+                        --overlap-offset '$overlap_offset'
+                    #end if
+                    #if str($option_overlap.overlap_core_length) == "":
+                        --overlap-core-length '$overlap_core_len'
+                    #else:
+                        --overlap-core-length '$overlap_core_length'
+                    #end if
                 #end if
             #end if
-        #end if
-
-        --batch-size $size
-        --window-size $post_processing.window_size
-        --min-coding-length $post_processing.min_coding_length
-        --edge-threshold $post_processing.edge_threshold
-        --peak-threshold $post_processing.peak_threshold
+            
+            --batch-size $size
+            --window-size $post_processing.window_size
+            --min-coding-length $post_processing.min_coding_length
+            --edge-threshold $post_processing.edge_threshold
+            --peak-threshold $post_processing.peak_threshold
+            
+            #if $write_by:
+                --write-by $write_by
+            #end if
+            
+            #if $compression:
+                --compression '$compression'
+            #end if
+            
+            $no_multiprocess
 
     ]]></command>
 
     <inputs>
         <param argument="--fasta-path" name="input" type="data" format="fasta,fasta.gz" label="Genomic sequence"></param>
         <param argument="--model-filepath" optional="true" name="input_model" type="data" format="h5" label="Lineage model" help="Import your lineage model to replace the default lineage. Please enter a value for the --subsequence_length parameter."></param>
+        <param name="compression" argument="--compression" type="select" optional="true" label="Compression used for datasets in predictions HDF5 file">
+            <option value="gzip" selected="true">gzip</option>
+            <option value="lzf">lzf</option>
+        </param>
         <param argument="--lineage" name="lineages" type="select" label="Available lineages" help="Choose the model to use for the annotation">
             <option value="land_plant">land plant</option>
             <option value="vertebrate">vertebrate</option>
@@ -100,6 +112,8 @@
             </when>
             <when value="false"/>
         </conditional>
+        <param name="write_by" argument="--write-by" type="integer" value="20000000" optional="true" label="Number of base pairs per super-chunk" help="For lower memory consumption, consider setting a lower number"/>
+        <param name="no_multiprocess" argument="--no-multiprocess" type="boolean" truevalue="--no-multiprocess" falsevalue="" checked="false" label="Disable multiprocessing for data processing" help="Disable multiprocessing for data processing."/>
     </inputs>
 
     <outputs>
