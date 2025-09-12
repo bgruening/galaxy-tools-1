@@ -12,7 +12,17 @@
     </requirements>
 
     <command detect_errors="exit_code"><![CDATA[
+
+            # Copy the helixer_post_bin binary
+            cp /home/helixer_user/HelixerPost/target/release/helixer_post_bin /tmp/helixer_post_bin &&
+
+            # Define the path to helixer_post_bin
+            HELIXER_POST_BIN="/tmp/helixer_post_bin" &&
+
+            # Launch fetch_helixer_models.py
             /usr/local/bin/fetch_helixer_models.py &&
+
+            # Launch Helixer
             Helixer.py
             --fasta-path '$input'
             --species '$species'
