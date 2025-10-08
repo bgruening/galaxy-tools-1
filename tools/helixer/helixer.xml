@@ -70,22 +70,15 @@
             #if $write_by:
                 --write-by $write_by
             #end if
-            
-            #if $compression:
-                --compression '$compression'
-            #end if
-            
+                  
             $no_multiprocess
-
+        
     ]]></command>
 
     <inputs>
         <param argument="--fasta-path" name="input" type="data" format="fasta,fasta.gz" label="Genomic sequence"></param>
         <param argument="--model-filepath" optional="true" name="input_model" type="data" format="h5" label="Lineage model" help="Import your lineage model to replace the default lineage. Please enter a value for the --subsequence_length parameter."></param>
-        <param name="compression" type="select" optional="true" label="Compression used for datasets in predictions HDF5 file">
-            <option value="gzip" selected="true">gzip</option>
-            <option value="lzf">lzf</option>
-        </param>
+ 
         <param argument="--lineage" name="lineages" type="select" label="Available lineages" help="Choose the model to use for the annotation">
             <option value="land_plant">land plant</option>
             <option value="vertebrate">vertebrate</option>
