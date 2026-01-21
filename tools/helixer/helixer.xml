@@ -109,7 +109,7 @@
             <when value="false"/>
         </conditional>
         <param name="write_by" type="integer" value="20000000" optional="true" label="Number of base pairs per super-chunk" help="For lower memory consumption, consider setting a lower number. Please note that this value must be greater than or equal to « --subsequence-length »"/>
-        <param name="no_multiprocess" type="boolean" truevalue="--no_multiprocess" falsevalue="" checked="false" label="Disable multiprocessing for data processing" help="Disable multiprocessing for data processing."/>
+        <param name="no_multiprocess" type="boolean" truevalue="--no_multiprocess" falsevalue="" checked="false" label="Do you want to disable multiprocessing?" help="By disabling it, you will reduce RAM consumption. You can do this especially on small genomes."/>
     </inputs>
 
     <outputs>
