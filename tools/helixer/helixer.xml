@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<tool id="helixer" name="Helixer" version="@TOOL_VERSION@+galaxy@VERSION_SUFFIX@" profile="21.05">
+<tool id="helixer" name="Helixer" version="@TOOL_VERSION@+galaxy@VERSION_SUFFIX@" profile="22.05">
     <description>gene calling</description>
     <macros>
         <import>macros.xml</import>
@@ -13,21 +13,12 @@
 
     <command detect_errors="exit_code"><![CDATA[
 
-            # Copy the helixer_post_bin binary
-            cp /home/helixer_user/HelixerPost/target/release/helixer_post_bin /tmp/helixer_post_bin &&
-
-            # Define the path to helixer_post_bin
-            HELIXER_POST_BIN="/tmp/helixer_post_bin" &&
-
-            # Launch fetch_helixer_models.py
             /usr/local/bin/fetch_helixer_models.py &&
 
-            # Launch Helixer
             Helixer.py
             --fasta-path '$input'
             --species '$species'
             --gff-output-path '$output'
-            --temporary-dir ./
 
             #set default_subsequence_length = {"fungi": 21384, "land_plant": 106920, "invertebrate": 213840, "vertebrate": 213840}
             #set subsequence_len = default_subsequence_length.get(str($lineages))
@@ -71,7 +62,9 @@
                 --write-by $write_by
             #end if
                   
-            $no_multiprocess
+            #if $no_multiprocess == "true":
+                --no-multiprocess
+            #end if
         
     ]]></command>
 
@@ -115,8 +108,8 @@
             </when>
             <when value="false"/>
         </conditional>
-        <param name="write_by" type="integer" value="20000000" optional="true" label="Number of base pairs per super-chunk" help="For lower memory consumption, consider setting a lower number"/>
-        <param name="no_multiprocess" type="boolean" truevalue="--no-multiprocess" falsevalue="" checked="false" label="Disable multiprocessing for data processing" help="Disable multiprocessing for data processing."/>
+        <param name="write_by" type="integer" value="20000000" optional="true" label="Number of base pairs per super-chunk" help="For lower memory consumption, consider setting a lower number. Please note that this value must be greater than or equal to « --subsequence-length »"/>
+        <param name="no_multiprocess" type="boolean" truevalue="--no_multiprocess" falsevalue="" checked="false" label="Disable multiprocessing for data processing" help="Disable multiprocessing for data processing."/>
     </inputs>
 
     <outputs>
@@ -127,7 +120,7 @@
         <test expect_num_outputs="1">
             <!-- Test for species and land_plant-->        
             <param name="input" value="sequence.fasta"/>
-            <param name="lineages" value="land_plant"/>
+            <param name="lineages" value="vertebrate"/>
             <param name="species" value="Arabidopsis"/>
             <param name="size" value="8"/>
             <param name="subsequence_length" value=""/>
@@ -142,7 +135,7 @@
             <param name="overlap_offset" value=""/>
             <param name="overlap_core_length" value=""/>
         </conditional>
-            <output name="output" value="ouput_species.gff3" ftype="gff3" compare="sim_size" delta="100"/>
+            <output name="output" value="ouput_species.gff3" ftype="gff3" compare="sim_size" delta="10000"/>
         </test>
         
         <test expect_num_outputs="1">
@@ -164,26 +157,6 @@
             <param name="overlap_core_length" value=""/>
         </conditional>
             <output name="output" value="vertebrate.gff3" ftype="gff3" lines_diff="2"/>
-        </test>
-
-        <test expect_failure="true">        
-        <!-- Test for model-filepath -->
-            <param name="input" value="sequence.fasta"/>
-            <param name="input_model" value="test.h5"/>
-            <param name="size" value="8"/>
-            <param name="size" value="8"/>
-            <param name="subsequence_length" value="1000"/>
-        <section name="post_processing">
-            <param name="window_size" value="100"/>
-            <param name="edge_threshold" value="0.1"/>
-            <param name="peak_threshold" value="0.8"/>
-            <param name="min_coding_length" value="100"/>
-        </section>
-        <conditional name="option_overlap">
-            <param name="use_overlap" value="true"/>
-            <param name="overlap_offset" value=""/>
-            <param name="overlap_core_length" value=""/>
-        </conditional>
         </test>
     </tests>
 

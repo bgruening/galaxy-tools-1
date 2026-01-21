@@ -11,8 +11,6 @@
     </xml>
 
     <xml name="requirements">
-        <container type="docker">gglyptodon/helixer-docker:helixer_v@TOOL_VERSION@_cuda_12.2.2-cudnn8</container>
+        <container type="docker">gglyptodon/helixer-docker:helixer_v@TOOL_VERSION@_cuda_12.2.2-cudnn8_1</container>
     </xml>
-
 </macros>
-
