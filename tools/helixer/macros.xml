@@ -1,6 +1,6 @@
 <macros>
-    <token name="@TOOL_VERSION@">0.3.3</token>
-    <token name="@VERSION_SUFFIX@">1</token>
+    <token name="@TOOL_VERSION@">0.3.6</token>
+    <token name="@VERSION_SUFFIX@">0</token>
 
 
     <xml name="citation">
@@ -11,8 +11,6 @@
     </xml>
 
     <xml name="requirements">
-        <container type="docker">gglyptodon/helixer-docker:helixer_v@TOOL_VERSION@_cuda_11.8.0-cudnn8</container>
+        <container type="docker">gglyptodon/helixer-docker:helixer_v@TOOL_VERSION@_cuda_12.2.2-cudnn8_1</container>
     </xml>
-
 </macros>
-
