@@ -92,7 +92,7 @@
             <param argument="--window-size" type="integer" min="0" value="100" label="Window size" help="This determines the number of bases averaged during the sliding window approach"/>
             <param argument="--edge-threshold" type="float" min="0" max="1" value="0.1" label="Edge threshold" help="This threshold specifies the genic score which defines the start / end boundaries of each candidate region"/>
             <param argument="--peak-threshold" type="float" min="0" max="1" value="0.8" label="Peak threshold" help="This threshold specifies the minimum peak genic score required to accept the candidate region"/>
-            <param argument="--min-coding-length" type="integer"  min="0" value="100" label="Minimum coding length"/>
+            <param argument="--min-coding-length" type="integer"  min="0" value="60" label="Minimum coding length"/>
         </section>
 
         <param name="subsequence_length" type="text" label="Subsequence length: how much of the genome the Neural Network can see at once" help="If you do not want to keep the default value, please enter the new value. Default values are 21384 for fungi, 106920 for land plant, and 213840 for vertebrates and invertebrates"/>
